@@ -1,20 +1,22 @@
 package handler
 
+import "net/http"
 
-// описание поведения структуры обьявленой в сервисе 
-type UsersService interface {
+// описание поведения структуры обьявленой в сервисе
+type AccountService interface {
 
 }
 
 type AccountHandler struct {
-	service UsersService
+	service AccountService
 }
 
-// construct UserHandler
-
-func NewUsersHandler(s UsersService) *UsersHandler{
-	return &UsersHandler{s}
+// construct AccountHandler
+func NewAccountHandler(s AccountService) *AccountHandler{
+	return &AccountHandler{s}
 }
 
+// gin.Context or standert http mux ???
+func (h *AccountHandler) Get(w http.ResponseWriter, r *http.Request){
 
-func 
+}

@@ -15,8 +15,7 @@ type Account struct {
 	storage AccountStorage
 }
 
-// construct Users
-
-func NewUsers (storage AccountStorage) *Account{
+// construct Account
+func NewAccount (storage AccountStorage) *Account{
 	return &Account{storage}
 }

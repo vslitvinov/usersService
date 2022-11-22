@@ -4,6 +4,6 @@ import "time"
 
 type Session struct {
 	UUIDUser string    
-	expiry   time.Time 
+	Expiry   time.Time 
 }
 
