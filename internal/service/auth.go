@@ -14,9 +14,7 @@ type account interface {
 	GetByEmail(ctx context.Context, email string) (models.Accounty, error) 
 	Delete(ctx context.Context, aid, sid string) error 
 }
-
-
-
+ 
 
 type Auth struct {
 	as account
