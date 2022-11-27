@@ -41,14 +41,11 @@ func (a *Account) Create(ctx context.Context, ac models.Accounty) (string, error
 }
 
 func (a *Account) FindByID(ctx context.Context, aid string) (models.Accounty, error) {
-	sql := `SELECT id,firstname, lastname, email, phone, username, password, created_at, updated_at, is_archive, is_verified
-	FROM accounts WHERE id = $1`
+	sql := `SELECT * FROM accounts WHERE id = $1`
 
 	row := a.pool.QueryRow(ctx, sql, aid)
 
-	var ac = models.Accounty{
-		ID: aid,
-	}
+	var ac = models.Accounty{}
 
 	err := row.Scan(
 		&ac.ID,
@@ -70,8 +67,7 @@ func (a *Account) FindByID(ctx context.Context, aid string) (models.Accounty, er
 }
 
 func (a *Account) FindByEmail(ctx context.Context, email string) (models.Accounty, error) {
-		sql := `SELECT id, firstname, lastname, email, phone, username, password, created_at, updated_at, is_archive, is_verified
-	FROM accounts WHERE email = $1`
+	sql := `SELECT * FROM accounts WHERE email = $1`
 
 	row := a.pool.QueryRow(ctx, sql, email)
 

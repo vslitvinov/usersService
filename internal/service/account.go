@@ -18,11 +18,18 @@ type AccountStorage interface {
 	Archive(ctx context.Context, aid string, archive bool) error
 }
 
-
+type session interface {
+	Create(ctx context.Context, aid, provider string, d Device) (models.Session, error)
+	GetByID(ctx context.Context, sid string) (models.Session, error)
+	GetAll(ctx context.Context, aid string) ([]models.Session, error)
+	Finish(ctx context.Context, sid, currSid string) error 
+	FinishAll(ctx context.Context, aid, sid string) error 
+}
 
 
 type Account struct {
 	storage AccountStorage
+	sessionServise session
 }
 
 // construct Account
@@ -74,8 +81,15 @@ func (a *Account) GetByEmail(ctx context.Context, email string) (models.Accounty
 }
 
 func (a *Account) Delete(ctx context.Context, aid, sid string) error {
-
 	// Archive
+	err := a.storage.Archive(ctx,aid,true)
+	if err != nil {
+		return fmt.Errorf("servise.account.delete %w", err)
+	}
 	// Finish session
-
+	err = a.sessionServise.FinishAll(ctx,aid,sid)
+	if err != nil {
+		return fmt.Errorf("servise.account.delete %w", err)
+	}
+	return nil
 }
