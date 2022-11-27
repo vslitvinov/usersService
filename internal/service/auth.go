@@ -1,21 +1,18 @@
 package service
 
-import "github.com/vslitvinov/usersService/internal/models"
+import (
+	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/vslitvinov/usersService/internal/models"
+)
 
-type AuthStorage interface {
-	Create(string) (error, string)
-	Update(string) error
-	Delete(string) error
-	Find(string) (error, models.Session)
-}
+
 
 type Auth struct {
-	storage AuthStorage
 }
 
 // construct Account
-func NewAuthService(storage AuthStorage) *Auth {
-	return &Auth{storage}
+func NewAuthService(db *pgxpool.Pool) *Auth {
+	return &Auth{}
 }
 
 //Аутентификация пользовател    

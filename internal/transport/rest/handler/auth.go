@@ -11,7 +11,7 @@ type AuthService interface {
 }
 
 type AuthHandler struct {
-	service AccountService
+	service AccountService 
 }
 
 // construct AccountHandler

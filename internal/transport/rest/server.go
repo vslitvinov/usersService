@@ -5,7 +5,6 @@ import (
 
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/vslitvinov/usersService/internal/service"
-	"github.com/vslitvinov/usersService/internal/storage/psql"
 	"github.com/vslitvinov/usersService/internal/transport/rest/handler"
 )
 
@@ -20,11 +19,8 @@ type Server struct {
 
 func NewServer(db *pgxpool.Pool) *Server {
 
-	storageAuth := psql.NewAuthStorage(db)
-	serviceAuth := service.NewAuthService(storageAuth)
-
-	storageAccount := psql.NewAuthStorage(db)
-	serviceAccount := service.NewAuthService(storageAccount)
+	serviceAuth := service.NewAuthService(db)
+	serviceAccount := service.NewAccountService(db)
 
 	r := &http.ServeMux{}
 
