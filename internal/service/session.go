@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/vslitvinov/usersService/internal/models"
+	"github.com/vslitvinov/usersService/internal/storage/psql"
 )
 
 
@@ -20,8 +22,8 @@ type Session struct {
 	storage SessionStorage
 }
 
-func NewSessionStorage() *Session {
-	return &Session{}
+func NewSessionStorage(db *pgxpool.Pool) *Session {
+	return &Session{storage:psql.NewSessionStorage(db)}
 }
 
 // Device represents data transfer object with user device data
@@ -37,12 +39,12 @@ func (s *Session) Create(ctx context.Context, aid, provider string, d Device) (m
 
 	se, err := models.NewSession(aid,provider,d.UserAgent,d.IP,224)
 	if err != nil {
-		return se, fmt.Errorf("service.Create.NewSession %w", err)
+		return se, fmt.Errorf("service.session.Create.NewSession %w", err)
 	}
 
 	se, err = s.storage.Create(ctx,se)
 	if err != nil {
-		return se, fmt.Errorf("service.Create %w", err)
+		return se, fmt.Errorf("service.session.Create %w", err)
 	}
 
 	return se, nil
@@ -55,7 +57,7 @@ func (s *Session) GetByID(ctx context.Context, sid string) (models.Session, erro
 
 	se,err := s.storage.FindByID(ctx,sid)
 	if err != nil {
-		return se, fmt.Errorf("service.GetByID %w", err)
+		return se, fmt.Errorf("service.session.GetByID %w", err)
 	}
 
 	return se, nil
@@ -67,7 +69,7 @@ func (s *Session) GetAll(ctx context.Context, aid string) ([]models.Session, err
 
 	ses,err := s.storage.FindAll(ctx,aid)
 	if err != nil {
-		return ses, fmt.Errorf("service.GetAll %w", err)
+		return ses, fmt.Errorf("service.session.GetAll %w", err)
 	}
 
 	return ses, nil
@@ -76,7 +78,7 @@ func (s *Session) GetAll(ctx context.Context, aid string) ([]models.Session, err
 // Finish session by id excluding current session with id.
 func (s *Session) Finish(ctx context.Context, sid, currSid string) error {
 	if sid == currSid {
-		return fmt.Errorf("service.Finish:")
+		return fmt.Errorf("service.session.Finish:")
 	}
 
 	err := s.storage.Delete(ctx,sid)
@@ -91,7 +93,7 @@ func (s *Session) Finish(ctx context.Context, sid, currSid string) error {
 func (s *Session) FinishAll(ctx context.Context, aid, sid string) error {
 	err := s.storage.DeleteAll(ctx,aid,sid)
 	if err != nil {
-		return fmt.Errorf("service.FinishAll %w", err)
+		return fmt.Errorf("service.session.FinishAll %w", err)
 	}
 
 	return nil

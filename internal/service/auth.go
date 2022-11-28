@@ -48,8 +48,16 @@ func (a *Auth) EmailSingIn(ctx context.Context, email, password string, d Device
 	return ms, nil
 }
 
-func (a *Auth) SingUp(models.Accounty)  {
+func (a *Auth) SingUp(ctx context.Context, ma models.Accounty) (string,error) {
 
+	var id string
+
+	id, err := a.as.Create(ctx, ma)
+	if err != nil {
+		return id, fmt.Errorf("service.SingUp.Create %w", err)
+	}
+
+	return id, nil
 
 }
 

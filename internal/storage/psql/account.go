@@ -79,6 +79,7 @@ func (a *Account) FindByEmail(ctx context.Context, email string) (models.Account
 		&ac.LastName,
 		&ac.Email,
 		&ac.Phone,
+		&ac.Username,
 		&ac.Password,
 		&ac.CreatedAt,
 		&ac.UpdatedAt,

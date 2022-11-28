@@ -28,7 +28,7 @@ type Accounty struct {
 }
 
 func (a *Accounty) GeneratePasswordHash() error {
-	b, err := bcrypt.GenerateFromPassword([]byte(a.Password), 11)
+	b, err := bcrypt.GenerateFromPassword([]byte(a.Password), 14)
 	if err != nil {
 		return fmt.Errorf("Accounty.GenerateFromPassword: %w", err)
 	}
@@ -39,7 +39,7 @@ func (a *Accounty) GeneratePasswordHash() error {
 }
 
 func (a *Accounty) CompareHashAndPassword(pd string) error {
-	if err := bcrypt.CompareHashAndPassword([]byte(pd), []byte(a.Password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(a.Password), []byte(pd)); err != nil {
 		return fmt.Errorf("Accounty.CompareHashAndPassword: %w", err)
 	}
 

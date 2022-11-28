@@ -33,7 +33,7 @@ func (s *Session) Create(ctx context.Context, ms models.Session) (models.Session
 		ms.TTL,
 		ms.ExpiresAt,
 	)
-	err := row.Scan(&ms.ID)
+	err := row.Scan(&ms.ID,&ms.CreatedAt)
 	if err != nil {
 		return ms, fmt.Errorf("storage.pool.Create.Scan %w", err)
 	}

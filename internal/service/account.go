@@ -14,6 +14,7 @@ import (
 type AccountStorage interface {
 	Create(ctx context.Context, ac models.Accounty) (string, error)
 	FindByID(ctx context.Context, aid string) (models.Accounty, error)
+	FindByEmail(ctx context.Context, email string) (models.Accounty, error)
 	Verified(ctx context.Context, aid string, verified bool) error
 	Archive(ctx context.Context, aid string, archive bool) error
 }
@@ -72,7 +73,7 @@ func (a *Account) GetByEmail(ctx context.Context, email string) (models.Accounty
 
 	var ac models.Accounty
 
-	ac, err := a.storage.FindByID(ctx, email)
+	ac, err := a.storage.FindByEmail(ctx, email)
 	if err != nil {
 		return ac, fmt.Errorf("Service.Account.GetByEmail %w", err)
 	}
