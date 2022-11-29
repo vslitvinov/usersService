@@ -27,6 +27,7 @@ type Accounty struct {
 	ISVerified bool      `json:"verified"`
 }
 
+// GeneratePasswordHash генерация хэша пароля
 func (a *Accounty) GeneratePasswordHash() error {
 	b, err := bcrypt.GenerateFromPassword([]byte(a.Password), 14)
 	if err != nil {
